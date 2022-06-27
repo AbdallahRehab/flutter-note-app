@@ -75,13 +75,13 @@ class NoteDetailPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              note.title,
+              note.title!,
               style: titleTextStyle,
             ),
             const SizedBox(
               height: 12,
             ),
-            Text(note.date, style: dateTextStyle),
+            Text(note.date!, style: dateTextStyle),
             const SizedBox(
               height: 12,
             ),
@@ -90,7 +90,7 @@ class NoteDetailPage extends StatelessWidget {
                 child: Column(
                   children: [
                     Text(
-                      note.note,
+                      note.note!,
                       style: bodyTextStyle,
                     ),
                     const SizedBox(

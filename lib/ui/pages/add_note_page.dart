@@ -12,7 +12,7 @@ class AddNotePage extends StatefulWidget {
   final bool isUpdate;
   final Note? note;
 
-  AddNotePage({this.isUpdate = false, this.note});
+  const AddNotePage({this.isUpdate = false, this.note});
 
   @override
   _AddNotePageState createState() => _AddNotePageState();
@@ -27,8 +27,8 @@ class _AddNotePageState extends State<AddNotePage> {
   @override
   void initState() {
     if (widget.isUpdate) {
-      _titleTextController.text = widget.note!.title;
-      _noteTextController.text = widget.note!.note;
+      _titleTextController.text = widget.note!.title!;
+      _noteTextController.text = widget.note!.note!;
     }
     super.initState();
   }

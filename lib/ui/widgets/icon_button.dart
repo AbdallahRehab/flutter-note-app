@@ -3,16 +3,16 @@ import 'package:note_app_flutter/ui/styles/text_styles.dart';
 
 class MyIconButton extends StatelessWidget {
   final IconData? icon;
-  final Function? onTap;
+  final Function onTap;
   final String txt;
 
-  const MyIconButton( {Key? key,this.icon,  this.onTap, this.txt = ""})
+  const MyIconButton( {Key? key,this.icon,  required this.onTap, this.txt = ""})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        onTap: ()=> onTap,
+        onTap:()=>  onTap(),
         child: Container(
           height: 44,
           width: icon != null ? 44 : 80,

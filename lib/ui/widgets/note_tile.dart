@@ -44,7 +44,7 @@ class NoteTile extends StatelessWidget {
                   ? const EdgeInsets.only(right: 100)
                   : null,
               child: Text(
-                note.title,
+                note.title!,
                 maxLines: _getMaxLines(tileType),
                 style: noteTitleTextStyle.copyWith(
                   fontSize: _getTxtSize(tileType),
@@ -56,7 +56,7 @@ class NoteTile extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Text(note.date,
+                Text(note.date!,
                     style: dateTextStyle.copyWith(
                         color: Colors.black.withOpacity(0.7))),
               ],

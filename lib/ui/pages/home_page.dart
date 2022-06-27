@@ -1,13 +1,14 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:get/get.dart';
 import 'package:note_app_flutter/core/controllers/note_controller.dart';
 import 'package:note_app_flutter/ui/pages/add_note_page.dart';
 import 'package:note_app_flutter/ui/styles/colors.dart';
 import 'package:note_app_flutter/ui/styles/text_styles.dart';
 import 'package:note_app_flutter/ui/widgets/icon_button.dart';
 import 'package:note_app_flutter/ui/widgets/note_tile.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:get/get.dart';
 
 class HomePage extends StatelessWidget {
   final _notesController = Get.put(NoteController());
@@ -41,6 +42,8 @@ class HomePage extends StatelessWidget {
     TileType.Square,
   ];
 
+  static const platform = MethodChannel('samples.flutter.dev/battery');
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,6 +75,23 @@ class HomePage extends StatelessWidget {
     );
   }
 
+  Future<void> _getBatteryLevel() async {
+    String batteryLevel = "Unknown battery level.";
+    try {
+      final int result = await platform.invokeMethod('getBatteryLevel');
+      batteryLevel = 'Battery level at $result % .';
+    } on PlatformException catch (e) {
+      batteryLevel = "Failed to get battery level: '${e.message}'.";
+    }
+
+    // _notesController.setBatteryValue(batteryLevel );
+    Get.snackbar(
+      "Info current battery state ",
+      "${batteryLevel}",
+      snackPosition: SnackPosition.BOTTOM,
+      colorText: Colors.white,
+    );
+  }
 
   _appBar() {
     return Container(
@@ -84,9 +104,20 @@ class HomePage extends StatelessWidget {
             "Notes",
             style: titleTextStyle.copyWith(fontSize: 32),
           ),
-          MyIconButton(
-            onTap: () {},
-            icon: Icons.search,
+          Row(
+            children: [
+              MyIconButton(
+                onTap: () {},
+                icon: Icons.search,
+              ),
+              SizedBox(width: 10,),
+              MyIconButton(
+                onTap: () async {
+                  await _getBatteryLevel();
+                },
+                icon: Icons.battery_alert,
+              ),
+            ],
           ),
         ],
       ),
@@ -99,9 +130,9 @@ class HomePage extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Obx(() {
         print("######## " + _notesController.noteList.length.toString());
-        if (_notesController.noteList.isNotEmpty) {
 
-         return SingleChildScrollView(
+        if (_notesController.noteList.isNotEmpty) {
+          return SingleChildScrollView(
             child: StaggeredGrid.count(
               crossAxisCount: 4,
               mainAxisSpacing: 4,
@@ -111,7 +142,7 @@ class HomePage extends StatelessWidget {
                   return StaggeredGridTile.count(
                     crossAxisCellCount: _tileCounts[index % 7].crossAxisCount,
                     mainAxisCellCount: _tileCounts[index % 7].mainAxisCount,
-                    child:  NoteTile(
+                    child: NoteTile(
                       tileType: _tileTypes[index % 7],
                       note: _notesController.noteList[index],
                     ),
@@ -121,29 +152,26 @@ class HomePage extends StatelessWidget {
             ),
           );
 
-        //   return StaggeredGrid.count(
-        //       crossAxisCount: 4,
-        //       mainAxisSpacing: 8,
-        //       crossAxisSpacing: 8,
-        //       // itemCount: _notesController.noteList.length,
-        //       // itemBuilder: (context, index) {
-        //       //   return NoteTile(
-        //       //     tileType: _tileTypes[index % 7],
-        //       //     note: _notesController.noteList[index],
-        //       //   );
-        //       // },
-        //       children: [
-        //         for(int index =0; index> _notesController.noteList.length;index++)
-        //           NoteTile(
-        //             tileType: _tileTypes[index % 7],
-        //             note: _notesController.noteList[index],
-        //           )
-        //       ],
-        //       // staggeredTileBuilder: (int index) => _tileCounts[index % 7]
-        // );
-
-
-
+          //   return StaggeredGrid.count(
+          //       crossAxisCount: 4,
+          //       mainAxisSpacing: 8,
+          //       crossAxisSpacing: 8,
+          //       // itemCount: _notesController.noteList.length,
+          //       // itemBuilder: (context, index) {
+          //       //   return NoteTile(
+          //       //     tileType: _tileTypes[index % 7],
+          //       //     note: _notesController.noteList[index],
+          //       //   );
+          //       // },
+          //       children: [
+          //         for(int index =0; index> _notesController.noteList.length;index++)
+          //           NoteTile(
+          //             tileType: _tileTypes[index % 7],
+          //             note: _notesController.noteList[index],
+          //           )
+          //       ],
+          //       // staggeredTileBuilder: (int index) => _tileCounts[index % 7]
+          // );
 
           // return StaggeredGridView.count(
           //   crossAxisCount: 4,
@@ -156,9 +184,6 @@ class HomePage extends StatelessWidget {
           //           ))
           //       .toList(),
           // );
-
-
-
 
           // ListView.builder(
           //     itemCount: _notesController.noteList.length,
@@ -180,6 +205,7 @@ class HomePage extends StatelessWidget {
 
 class GridTile {
   const GridTile(this.crossAxisCount, this.mainAxisCount);
+
   final int crossAxisCount;
   final int mainAxisCount;
 }

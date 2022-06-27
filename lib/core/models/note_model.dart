@@ -2,15 +2,15 @@ import 'package:flutter/cupertino.dart';
 
 class Note {
   int? id;
-  late String title;
-  late String note;
-  late String date;
+  String? title;
+  String? note;
+  String? date;
 
   Note(
       {this.id,
-      required this.title,
-      required this.note,
-      required this.date});
+       this.title,
+       this.note,
+       this.date});
 
   Note.fromJson(Map<String, dynamic> json) {
     id = json['id'];

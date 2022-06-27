@@ -19,6 +19,11 @@ Flutter Simple & Lightweight Note App
 ## Getting Started
 
 This project is a Flutter Simple & Lightweight Note App.
+and
+Calling platform-specific iOS and Android code using platform channels
+
+The following code demonstrates how to call a platform-specific API to retrieve and display the current battery level. It uses the Android BatteryManager API, and the iOS device.batteryLevel API, with a single platform message, getBatteryLevel().
+
 
 A few resources to get you started if this is your first Flutter project:
 

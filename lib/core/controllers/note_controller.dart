@@ -5,11 +5,16 @@ import 'package:get/get.dart';
 
 class NoteController extends GetxController {
   final noteList = [].obs;
-
+  var batteryLevel = 'Unknown battery level.'.obs ;
   @override
   void onReady() {
     getNotes();
     super.onReady();
+  }
+
+  setBatteryValue(value) {
+    print('WW $value');
+    batteryLevel=value;
   }
 
   Future<void> addNote({required Note note}) async {
